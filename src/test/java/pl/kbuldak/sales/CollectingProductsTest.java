@@ -1,4 +1,4 @@
-package pl.jkanclerz.sales;
+package pl.kbuldak.sales;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package pl.jkanclerz.sales;
+package pl.kbuldak.sales;
 
 public class Cart {
     public static Cart empty() {

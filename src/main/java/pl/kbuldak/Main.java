@@ -1,4 +1,4 @@
-package pl.jkanclerz;
+package pl.kbuldak;
 
 import java.util.ArrayList;
 import java.util.Arrays;

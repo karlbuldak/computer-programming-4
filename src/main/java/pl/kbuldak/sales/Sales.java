@@ -1,4 +1,4 @@
-package pl.jkanclerz.sales;
+package pl.kbuldak.sales;
 
 import javax.swing.plaf.synth.SynthLookAndFeel;
 import java.util.Optional;

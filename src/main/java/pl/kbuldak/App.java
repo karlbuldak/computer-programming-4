@@ -1,11 +1,11 @@
-package pl.jkanclerz;
+package pl.kbuldak;
 
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import pl.jkanclerz.productcatalog.HashMapProductStorage;
-import pl.jkanclerz.productcatalog.ProductCatalog;
+import pl.kbuldak.productcatalog.HashMapProductStorage;
+import pl.kbuldak.productcatalog.ProductCatalog;
 
 import java.math.BigDecimal;
 

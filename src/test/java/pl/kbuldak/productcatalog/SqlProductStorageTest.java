@@ -1,4 +1,4 @@
-package pl.jkanclerz.productcatalog;
+package pl.kbuldak.productcatalog;
 
 public class SqlProductStorageTest {
 }

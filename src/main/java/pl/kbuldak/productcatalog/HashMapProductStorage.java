@@ -1,4 +1,4 @@
-package pl.jkanclerz.productcatalog;
+package pl.kbuldak.productcatalog;
 
 import java.util.HashMap;
 import java.util.List;

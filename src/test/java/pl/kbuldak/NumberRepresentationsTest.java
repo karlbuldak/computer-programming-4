@@ -1,4 +1,4 @@
-package pl.jkanclerz;
+package pl.kbuldak;
 
 import org.junit.jupiter.api.Test;
 
