@@ -19,7 +19,7 @@ public class App {
     ProductCatalog createNewProductCatalog() {
         ProductCatalog productCatalog = new ProductCatalog(new HashMapProductStorage());
 
-        String productId1 = productCatalog.addProduct("My ebok", "NIce one");
+        String productId1 = productCatalog.addProduct("My Ebook", "NIce one");
         productCatalog.assignImage(productId1, "images/nice.jpeg");
         productCatalog.changePrice(productId1, BigDecimal.TEN);
         productCatalog.publishProduct(productId1);
