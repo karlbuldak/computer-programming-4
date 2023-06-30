@@ -1,5 +1,3 @@
-const a = 5;
-const foo = () => {console.log("hello world!!")};
 const getProducts = () => {
     return fetch("/api/products")
         .then(response => response.json());
@@ -38,8 +36,9 @@ const createHtmlComponent = (product) => {
 const addToCart = (productId) => {
     return fetch(`/api/add-to-cart/${productId}`, {
         method: 'POST'
-    });
+    })
 };
+
 const initializeAddToCartHandler = (htmlEl) => {
     const btn = htmlEl.querySelector('button.product__add-to-cart');
     btn.addEventListener('click', () => {
