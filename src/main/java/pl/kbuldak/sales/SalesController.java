@@ -1,23 +1,45 @@
 package pl.kbuldak.sales;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import pl.kbuldak.sales.offering.Offer;
+import pl.kbuldak.sales.reservation.OfferAcceptanceRequest;
+import pl.kbuldak.sales.reservation.ReservationDetails;
+import pl.kbuldak.web.CurrentCustomerContext;
 
 @RestController
 public class SalesController {
-    @GetMapping("/api/offer")
-    public Offer getCurrentOffer(){
-        return null;
+
+    private Sales sales;
+    private CurrentCustomerContext currentCustomerContext;
+
+    public SalesController(Sales sales, CurrentCustomerContext currentCustomerContext) {
+        this.sales = sales;
+        this.currentCustomerContext = currentCustomerContext;
     }
 
-    @PostMapping("/api/add-to-cart{productId}")
-    public void addToCart(@PathVariable String productId){
-        Sales.addToCart(getCurrentCustomer(), productId);
+    @GetMapping("/api/current-offer")
+    public Offer currentOffer() {
+        return sales.getCurrentOffer(getCurrentCustomer());
     }
 
+    @PostMapping("/api/cart/{productId}")
+    public void addToCart(@PathVariable String productId) {
+
+        sales.addToCart(getCurrentCustomer(), productId);
+    }
+
+
+    @PostMapping("/api/accept-offer")
+    public ReservationDetails acceptOffer(@RequestBody OfferAcceptanceRequest request) {
+        return sales.acceptOffer(getCurrentCustomerId(), request);
+    }
+
+    @GetMapping("/api/current-customer")
+    public String getCurrentCustomerId() {
+        return currentCustomerContext.getCurrentCustomerId();
+    }
     private String getCurrentCustomer() {
-        return null;
+        return currentCustomerContext.getCurrentCustomerId();
     }
 }

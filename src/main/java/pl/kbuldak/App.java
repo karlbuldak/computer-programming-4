@@ -4,9 +4,22 @@ package pl.kbuldak;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+import pl.kbuldak.payu.PayU;
+import pl.kbuldak.payu.PayUApiCredentials;
 import pl.kbuldak.productcatalog.HashMapProductStorage;
 import pl.kbuldak.productcatalog.ProductCatalog;
+import pl.kbuldak.sales.Sales;
+import pl.kbuldak.sales.cart.CartStorage;
+import pl.kbuldak.sales.offering.OfferCalculator;
+import pl.kbuldak.sales.payment.PaymentGateway;
+import pl.kbuldak.sales.payment.PayuPaymentGateway;
+import pl.kbuldak.sales.productdetails.ProductCatalogProductDetailsProvider;
+import pl.kbuldak.sales.productdetails.ProductDetailsProvider;
+import pl.kbuldak.sales.reservation.InMemoryReservationStorage;
+import pl.kbuldak.web.SessionCurrentCustomerContext;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
 @SpringBootApplication
@@ -19,16 +32,47 @@ public class App {
     ProductCatalog createNewProductCatalog() {
         ProductCatalog productCatalog = new ProductCatalog(new HashMapProductStorage());
 
-        String productId1 = productCatalog.addProduct("My Ebook", "NIce one");
-        productCatalog.assignImage(productId1, "images/nice.jpeg");
+        String productId1 = productCatalog.addProduct("Applying UML and Patterns", "Craig Larman");
+        productCatalog.assignImage(productId1, "/image/book_1.jpg");
         productCatalog.changePrice(productId1, BigDecimal.TEN);
         productCatalog.publishProduct(productId1);
 
-        String productId2 = productCatalog.addProduct("New Ebook", "NIce one");
-        productCatalog.assignImage(productId2, "images/nice.jpeg");
+        String productId2 = productCatalog.addProduct("Clean Code", "Robert Martin");
+        productCatalog.assignImage(productId2, "/image/book_2.jpg");
         productCatalog.changePrice(productId2, BigDecimal.valueOf(20.20));
         productCatalog.publishProduct(productId2);
 
+        String productId3 = productCatalog.addProduct("Domain-Driven Design", "Eric Evans");
+        productCatalog.assignImage(productId3, "/image/book_3.jpg");
+        productCatalog.changePrice(productId3, BigDecimal.valueOf(30.30));
+        productCatalog.publishProduct(productId3);
+
         return productCatalog;
+    }
+
+    @Bean
+    PaymentGateway createPaymentGateway() {
+        return new PayuPaymentGateway(new PayU(PayUApiCredentials.sandbox(), new RestTemplate()));
+    }
+
+    @Bean
+    Sales createSales(ProductDetailsProvider productDetailsProvider, PaymentGateway paymentGateway) {
+        return new Sales(
+                new CartStorage(),
+                productDetailsProvider,
+                new OfferCalculator(productDetailsProvider),
+                paymentGateway,
+                new InMemoryReservationStorage()
+        );
+    }
+
+    @Bean
+    SessionCurrentCustomerContext currentCustomerContext(HttpSession httpSession) {
+        return new SessionCurrentCustomerContext(httpSession);
+    }
+
+    @Bean
+    ProductDetailsProvider createProductDetailsProvider(ProductCatalog catalog) {
+        return new ProductCatalogProductDetailsProvider(catalog);
     }
 }
